@@ -1,6 +1,6 @@
 env:
-  CLASPRC: ${{ secrets.STG_CLASPRC }}
-  CLASP: ${{secrets.STG_CLASP}}
+  CLASPRC: ${{ secrets.CLASPRC }}
+  CLASP: ${{secrets.CLASP}}
 on:
   push:
     branches:
@@ -21,8 +21,6 @@ jobs:
     - name: generate .clasp.json
       run: echo ${CLASP} > ~/.clasp.json
     - name: push
-      run: |
-        clasp push
+      run: clasp push
     - name: deploy
-      run: |
-        clasp deploy
+      run: clasp deploy
