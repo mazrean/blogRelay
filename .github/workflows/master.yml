@@ -1,0 +1,26 @@
+env:
+  CLASPRC: ${{ secrets.CLASPRC }}
+  CLASP: ${{secrets.CLASP}}
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.13.0
+    - name: clasp install
+      run: sudo npm i @google/clasp -g
+    - name: genarate .clasprc.json
+      run: echo ${CLASPRC} > ~/.clasprc.json
+    - name: generate .clasp.json
+      run: echo ${CLASP} > ~/.clasp.json
+    - name: push
+      run: clasp push
+    - name: deploy
+      run: clasp deploy
