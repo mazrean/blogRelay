@@ -1,5 +1,6 @@
 env:
   CLASPRC: ${{ secrets.STG_CLASPRC }}
+  CLASP: ${{secrets.STG_CLASP}}
 on:
   push:
     branches:
@@ -15,11 +16,13 @@ jobs:
         node-version: 12.13.0
     - name: clasp install
       run: sudo npm i @google/clasp -g
-    - name: set clasprc
-      run: sudo echo ${CLASPRC} > ~/.clasprc.json
+    - name: genarate .clasprc.json
+      run: echo ${CLASPRC} > ~/.clasprc.json
+    - name: generate .clasp.json
+      run: echo ${CLASP} > ~/.clasp.json
     - name: push
       run: |
-        sudo clasp push --force
+        clasp push
     - name: deploy
       run: |
-        sudo clasp deploy
+        clasp deploy
