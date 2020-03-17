@@ -21,6 +21,6 @@ jobs:
     - name: generate .clasp.json
       run: echo ${CLASP} > ~/.clasp.json
     - name: push
-      run: clasp push
+      run: clasp push --force
     - name: deploy
       run: clasp deploy
