@@ -58,7 +58,7 @@ function sendMessage(message: string): GoogleAppsScript.URL_Fetch.HTTPResponse {
   );
   const sign: string = signature.reduce((str, chr) => {
     const char = (chr < 0 ? chr + 256 : chr).toString(16);
-    return str + (char.length === 1 ? "0" : "") + chr;
+    return str + (char.length === 1 ? "0" : "") + char;
   }, "");
   const header: GoogleAppsScript.URL_Fetch.HttpHeaders = {
     "Content-Type": "text/plain; charset=utf-8",
