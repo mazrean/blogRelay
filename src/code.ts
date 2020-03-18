@@ -1,16 +1,18 @@
+type todayInfo = {
+  todayPersons: string[];
+  tomorrowPersons: string[];
+  nextweekPersons: string[];
+  blogName: string;
+  day: number;
+};
+
 function makeMessage({
   todayPersons,
   tomorrowPersons,
   nextweekPersons,
   blogName,
   day
-}: {
-  todayPersons: string[];
-  tomorrowPersons: string[];
-  nextweekPersons: string[];
-  blogName: string;
-  day: number;
-}): string {
+}: todayInfo): string {
   let message = "";
   const toToday: string = todayPersons.reduce(
     (str, item) => `${str}@${item} `,
@@ -32,24 +34,27 @@ function makeMessage({
   }
   if (toTomorrow) {
     message +=
-      "注意\n- 「明日の担当者は" +
+      "今日の担当者への注意\n- 「明日の担当者は" +
       toTomorrow +
       "です。」という内容を必ず含めてください。\n";
   }
-  message += `- 「${blogName}」のタグをつけてください。\n- 記事の初めに「${blogName}${day}日目の記事です」と書いてください。\n- post imageは必ず設定しましょう。`;
+  message += `- 「${blogName}」のタグをつけてください。\n- 記事の初めに「${blogName} ${day}日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。`;
   return message;
 }
 
-function sendMessage(message: string): GoogleAppsScript.URL_Fetch.HTTPResponse {
-  const webhookID: string = PropertiesService.getScriptProperties().getProperty(
-    "webhookID"
-  );
-  const webhookSecret: string = PropertiesService.getScriptProperties().getProperty(
-    "webhookSecret"
-  );
-  const webhookChannel: string = PropertiesService.getScriptProperties().getProperty(
-    "webhookChannel"
-  );
+type messageInfo = {
+  message: string;
+  webhookID: string;
+  webhookSecret: string;
+  webhookChannel: string;
+};
+
+function sendMessage({
+  message,
+  webhookID,
+  webhookSecret,
+  webhookChannel
+}: messageInfo): GoogleAppsScript.URL_Fetch.HTTPResponse {
   const signature: number[] = Utilities.computeHmacSignature(
     Utilities.MacAlgorithm.HMAC_SHA_1,
     message,
@@ -58,7 +63,7 @@ function sendMessage(message: string): GoogleAppsScript.URL_Fetch.HTTPResponse {
   );
   const sign: string = signature.reduce((str, chr) => {
     const char = (chr < 0 ? chr + 256 : chr).toString(16);
-    return str + (char.length === 1 ? "0" : "") + chr;
+    return str + (char.length === 1 ? "0" : "") + char;
   }, "");
   const header: GoogleAppsScript.URL_Fetch.HttpHeaders = {
     "Content-Type": "text/plain; charset=utf-8",
@@ -76,6 +81,14 @@ function sendMessage(message: string): GoogleAppsScript.URL_Fetch.HTTPResponse {
     options
   );
   return response;
+}
+
+function dateDiff(startDate: Date, today: Date): number {
+  return (
+    Math.floor(
+      (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    ) + 1
+  );
 }
 
 function myFunction(): void {
@@ -109,8 +122,9 @@ function myFunction(): void {
   const blogName: string = PropertiesService.getScriptProperties().getProperty(
     "name"
   );
-  const day: number =
-    (startDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24) + 1;
+
+  const day: number = dateDiff(startDate, date);
+
   const message: string = makeMessage({
     todayPersons,
     tomorrowPersons,
@@ -119,6 +133,22 @@ function myFunction(): void {
     day
   });
   if (message) {
-    sendMessage(message);
+    const webhookID: string = PropertiesService.getScriptProperties().getProperty(
+      "webhookID"
+    );
+    const webhookSecret: string = PropertiesService.getScriptProperties().getProperty(
+      "webhookSecret"
+    );
+    const webhookChannel: string = PropertiesService.getScriptProperties().getProperty(
+      "webhookChannel"
+    );
+    sendMessage({
+      message,
+      webhookID,
+      webhookSecret,
+      webhookChannel
+    });
   }
 }
+
+export { todayInfo, makeMessage, messageInfo, sendMessage, dateDiff };
