@@ -105,6 +105,8 @@ function myFunction(): void {
   const startDate: Date = new Date(
     PropertiesService.getScriptProperties().getProperty("startDate")
   );
+
+  const day: number = dateDiff(startDate, date);
   const today: string = Utilities.formatDate(date, "JST", "yyyy/MM/dd");
   date.setDate(date.getDate() + 1);
   const tomorrow: string = Utilities.formatDate(date, "JST", "yyyy/MM/dd");
@@ -122,8 +124,6 @@ function myFunction(): void {
   const blogName: string = PropertiesService.getScriptProperties().getProperty(
     "name"
   );
-
-  const day: number = dateDiff(startDate, date);
 
   const message: string = makeMessage({
     todayPersons,
