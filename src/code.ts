@@ -38,7 +38,10 @@ function makeMessage({
       toTomorrow +
       "です。」という内容を必ず含めてください。\n";
   }
-  message += `- 「${blogName}」のタグをつけてください。\n- 記事の初めに「${blogName} ${day}日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。`;
+  if (message) {
+    message += `- 「${blogName}」のタグをつけてください。\n- 記事の初めに「${blogName} ${day}日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。`;
+  }
+
   return message;
 }
 
