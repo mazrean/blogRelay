@@ -80,7 +80,7 @@ function sendMessage({
     payload: message,
   };
   const response: GoogleAppsScript.URL_Fetch.HTTPResponse = UrlFetchApp.fetch(
-    `https://q.trap.jp/api/1.0/webhooks/${webhookID}?embed=1`,
+    `https://q.trap.jp/api/v3/webhooks/${webhookID}?embed=1`,
     options
   );
   return response;
