@@ -24,7 +24,6 @@
     ],
     "rules": {
         "camelcase": "off",
-		"@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^myFunction$" }],
-		"@typescript-eslint/camelcase": ["error", { "properties": "always","allow":["URL_Fetch"] }]
+		"@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^myFunction$" }]
     }
 }

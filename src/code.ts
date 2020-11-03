@@ -11,7 +11,7 @@ function makeMessage({
   tomorrowPersons,
   nextweekPersons,
   blogName,
-  day
+  day,
 }: todayInfo): string {
   let message = "";
   const toToday: string = todayPersons.reduce(
@@ -53,7 +53,7 @@ function sendMessage({
   message,
   webhookID,
   webhookSecret,
-  webhookChannel
+  webhookChannel,
 }: messageInfo): GoogleAppsScript.URL_Fetch.HTTPResponse {
   const signature: number[] = Utilities.computeHmacSignature(
     Utilities.MacAlgorithm.HMAC_SHA_1,
@@ -68,13 +68,13 @@ function sendMessage({
   const header: GoogleAppsScript.URL_Fetch.HttpHeaders = {
     "Content-Type": "text/plain; charset=utf-8",
     "X-TRAQ-Signature": sign,
-    "X-TRAQ-Channel-Id": webhookChannel
+    "X-TRAQ-Channel-Id": webhookChannel,
   };
   const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
     method: "post",
     contentType: "text/plain; charset=utf-8",
     headers: header,
-    payload: message
+    payload: message,
   };
   const response: GoogleAppsScript.URL_Fetch.HTTPResponse = UrlFetchApp.fetch(
     `https://q.trap.jp/api/1.0/webhooks/${webhookID}?embed=1`,
@@ -96,8 +96,8 @@ function myFunction(): void {
   const dateIDs: string[][] = sheet
     .getRange(1, 1, sheet.getLastRow(), 2)
     .getValues()
-    .filter(values => values[1])
-    .map(values => {
+    .filter((values) => values[1])
+    .map((values) => {
       values[0] = Utilities.formatDate(values[0], "JST", "yyyy/MM/dd");
       return values;
     });
@@ -113,14 +113,14 @@ function myFunction(): void {
   date.setDate(date.getDate() + 6);
   const nextweek: string = Utilities.formatDate(date, "JST", "yyyy/MM/dd");
   const todayPersons: string[] = dateIDs
-    .filter(values => values[0] === today)
-    .map(values => values[1]);
+    .filter((values) => values[0] === today)
+    .map((values) => values[1]);
   const tomorrowPersons: string[] = dateIDs
-    .filter(values => values[0] === tomorrow)
-    .map(values => values[1]);
+    .filter((values) => values[0] === tomorrow)
+    .map((values) => values[1]);
   const nextweekPersons: string[] = dateIDs
-    .filter(values => values[0] === nextweek)
-    .map(values => values[1]);
+    .filter((values) => values[0] === nextweek)
+    .map((values) => values[1]);
   const blogName: string = PropertiesService.getScriptProperties().getProperty(
     "name"
   );
@@ -130,7 +130,7 @@ function myFunction(): void {
     tomorrowPersons,
     nextweekPersons,
     blogName,
-    day
+    day,
   });
   if (message) {
     const webhookID: string = PropertiesService.getScriptProperties().getProperty(
@@ -146,7 +146,7 @@ function myFunction(): void {
       message,
       webhookID,
       webhookSecret,
-      webhookChannel
+      webhookChannel,
     });
   }
 }
