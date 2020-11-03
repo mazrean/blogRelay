@@ -41,6 +41,8 @@ describe("test code.ts", (): void => {
       new Date("2020/03/19")
     );
     expect(response).toBe(11);
+    response = dateDiff(new Date("2020/03/09"), new Date("2020/03/09"));
+    expect(response).toBe(1);
     response = dateDiff(new Date("2020/03/09"), new Date("2020/04/09"));
     expect(response).toBe(32);
     response = dateDiff(new Date("2020/03/09"), new Date("2021/03/09"));
