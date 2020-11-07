@@ -1,14 +1,8 @@
-import {
-  todayInfo,
-  makeMessage,
-  messageInfo,
-  sendMessage,
-  dateDiff
-} from "../src/code";
+import { todayInfo, makeMessage, dateDiff } from "../src/code";
 
 describe("test code.ts", (): void => {
   beforeAll(() => {
-    Logger.log = jest.fn().mockImplementation(msg => {
+    Logger.log = jest.fn().mockImplementation((msg) => {
       return console.log(msg);
     });
     jest.spyOn(Logger, "log");
@@ -19,7 +13,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: ["huga"],
       nextweekPersons: ["oge"],
       blogName: "ブログリレー",
-      day: 5
+      day: 5,
     };
     let response: string = makeMessage(todayInfo);
     expect(response).toBe(
@@ -30,7 +24,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: [],
       nextweekPersons: [],
       blogName: "ブログリレー",
-      day: -7
+      day: -7,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe("");
@@ -39,7 +33,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: [],
       nextweekPersons: ["oge"],
       blogName: "ブログリレー",
-      day: -7
+      day: -7,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe(
@@ -50,7 +44,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: ["huga"],
       nextweekPersons: [],
       blogName: "ブログリレー",
-      day: -7
+      day: -7,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe(
@@ -61,7 +55,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: [],
       nextweekPersons: [],
       blogName: "ブログリレー",
-      day: 5
+      day: 5,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe(
@@ -73,7 +67,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: ["huga"],
       nextweekPersons: ["oge"],
       blogName: "ブログリレー",
-      day: -7
+      day: -7,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe(
@@ -84,7 +78,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: [],
       nextweekPersons: ["oge"],
       blogName: "ブログリレー",
-      day: 5
+      day: 5,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe(
@@ -95,7 +89,7 @@ describe("test code.ts", (): void => {
       tomorrowPersons: ["huga"],
       nextweekPersons: [],
       blogName: "ブログリレー",
-      day: 5
+      day: 5,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe(

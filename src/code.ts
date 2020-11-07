@@ -35,12 +35,16 @@ function makeMessage({
   if (toToday) {
     message += toToday + "担当日当日です。記事の投稿をお願いします。\n";
   }
-  if (toToday||toTomorrow||toNextweek) {
-    message += `${toToday?"今日の担当者への":""}注意\n`
-    if (!toToday||toTomorrow) {
-      message += `- 「明日の担当者は${toToday?toTomorrow:"~"}です。」という内容を必ず含めてください。\n`
+  if (toToday || toTomorrow || toNextweek) {
+    message += `${toToday ? "今日の担当者への" : ""}注意\n`;
+    if (!toToday || toTomorrow) {
+      message += `- 「明日の担当者は${
+        toToday ? toTomorrow : "~"
+      }です。」という内容を必ず含めてください。\n`;
     }
-    message += `- 「${blogName}」のタグをつけてください。\n- 記事の初めに「${blogName} ${toToday?day:"$N$"}日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。`;
+    message += `- 「${blogName}」のタグをつけてください。\n- 記事の初めに「${blogName} ${
+      toToday ? day : "$N$"
+    }日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。`;
   }
 
   return message;
