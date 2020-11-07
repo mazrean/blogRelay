@@ -1,14 +1,8 @@
-import {
-  todayInfo,
-  makeMessage,
-  messageInfo,
-  sendMessage,
-  dateDiff
-} from "../src/code";
+import { todayInfo, makeMessage, dateDiff } from "../src/code";
 
 describe("test code.ts", (): void => {
   beforeAll(() => {
-    Logger.log = jest.fn().mockImplementation(msg => {
+    Logger.log = jest.fn().mockImplementation((msg) => {
       return console.log(msg);
     });
     jest.spyOn(Logger, "log");
@@ -19,21 +13,88 @@ describe("test code.ts", (): void => {
       tomorrowPersons: ["huga"],
       nextweekPersons: ["oge"],
       blogName: "ブログリレー",
-      day: 5
+      day: 5,
     };
     let response: string = makeMessage(todayInfo);
     expect(response).toBe(
-      "@oge 担当日の一週間前です。準備をお願いします。\n@hoge 担当日当日です。記事の投稿をお願いします。\n今日の担当者への注意\n- 「明日の担当者は@huga です。」という内容を必ず含めてください。\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー 5日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+      "@oge 担当日の一週間前です。準備をお願いします。\n@huga 担当日の前日です。準備をお願いします。\n@hoge 担当日当日です。記事の投稿をお願いします。\n今日の担当者への注意\n- 「明日の担当者は@huga です。」という内容を必ず含めてください。\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー 5日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
     );
     todayInfo = {
       todayPersons: [],
       tomorrowPersons: [],
       nextweekPersons: [],
       blogName: "ブログリレー",
-      day: -7
+      day: -7,
     };
     response = makeMessage(todayInfo);
     expect(response).toBe("");
+    todayInfo = {
+      todayPersons: [],
+      tomorrowPersons: [],
+      nextweekPersons: ["oge"],
+      blogName: "ブログリレー",
+      day: -7,
+    };
+    response = makeMessage(todayInfo);
+    expect(response).toBe(
+      "@oge 担当日の一週間前です。準備をお願いします。\n注意\n- 「明日の担当者は~です。」という内容を必ず含めてください。\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー $N$日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+    );
+    todayInfo = {
+      todayPersons: [],
+      tomorrowPersons: ["huga"],
+      nextweekPersons: [],
+      blogName: "ブログリレー",
+      day: -7,
+    };
+    response = makeMessage(todayInfo);
+    expect(response).toBe(
+      "@huga 担当日の前日です。準備をお願いします。\n注意\n- 「明日の担当者は~です。」という内容を必ず含めてください。\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー $N$日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+    );
+    todayInfo = {
+      todayPersons: ["hoge"],
+      tomorrowPersons: [],
+      nextweekPersons: [],
+      blogName: "ブログリレー",
+      day: 5,
+    };
+    response = makeMessage(todayInfo);
+    expect(response).toBe(
+      "@hoge 担当日当日です。記事の投稿をお願いします。\n今日の担当者への注意\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー 5日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+    );
+    response = makeMessage(todayInfo);
+    todayInfo = {
+      todayPersons: [],
+      tomorrowPersons: ["huga"],
+      nextweekPersons: ["oge"],
+      blogName: "ブログリレー",
+      day: -7,
+    };
+    response = makeMessage(todayInfo);
+    expect(response).toBe(
+      "@oge 担当日の一週間前です。準備をお願いします。\n@huga 担当日の前日です。準備をお願いします。\n注意\n- 「明日の担当者は~です。」という内容を必ず含めてください。\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー $N$日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+    );
+    todayInfo = {
+      todayPersons: ["hoge"],
+      tomorrowPersons: [],
+      nextweekPersons: ["oge"],
+      blogName: "ブログリレー",
+      day: 5,
+    };
+    response = makeMessage(todayInfo);
+    expect(response).toBe(
+      "@oge 担当日の一週間前です。準備をお願いします。\n@hoge 担当日当日です。記事の投稿をお願いします。\n今日の担当者への注意\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー 5日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+    );
+    todayInfo = {
+      todayPersons: ["hoge"],
+      tomorrowPersons: ["huga"],
+      nextweekPersons: [],
+      blogName: "ブログリレー",
+      day: 5,
+    };
+    response = makeMessage(todayInfo);
+    expect(response).toBe(
+      "@huga 担当日の前日です。準備をお願いします。\n@hoge 担当日当日です。記事の投稿をお願いします。\n今日の担当者への注意\n- 「明日の担当者は@huga です。」という内容を必ず含めてください。\n- 「ブログリレー」のタグをつけてください。\n- 記事の初めに「ブログリレー 5日目の記事です」という内容を書いてください。\n- post imageは必ず設定しましょう。"
+    );
   });
   test("dateDiff", (): void => {
     let response: number = dateDiff(
