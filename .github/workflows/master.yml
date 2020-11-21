@@ -1,5 +1,5 @@
 env:
-  CLASPRC: ${{ secrets.CLASPRCTEST }}
+  CLASPRC: ${{ secrets.CLASPRC }}
   CLASP: ${{secrets.CLASP}}
 on:
   push:
